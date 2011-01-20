@@ -1,0 +1,10 @@
+database:
+
+  database: superfunchart_dev
+  host: localhost
+  port: 5432
+  user: superfunchart
+  password: Sup3rFunCh@rt
+
+server:
+  host: http://superfunchart.tplus1.com

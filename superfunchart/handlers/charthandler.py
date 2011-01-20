@@ -20,6 +20,12 @@ class ChartHandler(Handler):
 
     def wants_to_handle(self, environ):
 
+        log.debug("inside wants_to_handle for %s" % self.title)
+
+        log.debug(
+            'request method: %(REQUEST_METHOD)s path info: %(PATH_INFO)s'
+            % environ)
+
         if environ['REQUEST_METHOD'] == 'GET' \
         and self.extract_chart_id(environ['PATH_INFO']):
 
@@ -73,9 +79,18 @@ class UpdateChart(ChartHandler):
 
     def wants_to_handle(self, environ):
 
+        log.debug("inside wants_to_handle for %s" % self.title)
+
         if environ['REQUEST_METHOD'] == 'POST' \
         and self.extract_chart_id(environ['PATH_INFO']):
+
+            log.debug('yup!')
+
             return self
+
+        else:
+
+            log.debug('nope!')
 
     def __call__(self, environ, start_response):
 

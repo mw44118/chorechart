@@ -20,22 +20,15 @@ class Dispatcher(Handler):
 
     def __call__(self, environ, start_response):
 
-        log.debug('dispatching %(REQUEST_METHOD)s %(PATH_INFO)s'
-            % environ)
-
         try:
 
             for h in self.handlers:
-
-                log.debug('Asking handler %s...' % h.title)
-
                 if h.wants_to_handle(environ):
-
-                    return h(environ, start_response)
+                    results =  h(environ, start_response)
                     self.dbconn.commit()
+                    return results
 
         except Exception, ex:
-            log.debug('OH NOES')
             log.exception(ex)
             log.critical(environ)
             self.dbconn.rollback()
