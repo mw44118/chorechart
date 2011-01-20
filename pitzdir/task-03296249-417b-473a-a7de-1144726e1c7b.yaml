@@ -1,0 +1,24 @@
+components: []
+created_time: &id001 2011-01-20 09:54:21.919173
+description: 'Just hard-code results coming back from the database for now?
+
+
+  Make a screen that has some images.  Each image has an empty and a full
+
+  version.'
+estimate: !!python/object:uuid.UUID
+  int: 155399720057331248732477289362993164344
+milestone: !!python/object:uuid.UUID
+  int: 224214034667746457821076390134923586403
+modified_time: *id001
+owner: !!python/object:uuid.UUID
+  int: 45529495046005995246098403189355383551
+pscore: 0
+status: !!python/object:uuid.UUID
+  int: 43618794528072056917073231133766458963
+tags: []
+title: Write example GET /chart/{chart_id}
+type: task
+uuid: !!python/object:uuid.UUID
+  int: 4202561638617256840706956200076254331
+yaml_file_saved: 2011-01-20 09:54:21.938169

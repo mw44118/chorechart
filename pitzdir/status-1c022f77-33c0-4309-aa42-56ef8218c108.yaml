@@ -1,0 +1,10 @@
+attached_files: []
+created_time: &id001 2011-01-20 09:49:14.606284
+description: ''
+modified_time: *id001
+pscore: 100
+title: finished
+type: status
+uuid: !!python/object:uuid.UUID
+  int: 37229731193113590757627877990761808136
+yaml_file_saved: 2011-01-20 09:49:15.496137

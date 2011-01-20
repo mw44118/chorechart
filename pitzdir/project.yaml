@@ -1,0 +1,6 @@
+classname: Project
+module: pitz.project
+order_method_name: by_milestone_status_pscore_created_time
+title: SuperFunChart
+uuid: !!python/object:uuid.UUID
+  int: 143017457696116416726944882879788012392

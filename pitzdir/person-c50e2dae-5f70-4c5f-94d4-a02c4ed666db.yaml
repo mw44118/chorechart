@@ -1,0 +1,10 @@
+attached_files: []
+created_time: &id001 2011-01-20 09:49:45.573342
+description: ''
+modified_time: *id001
+pscore: 0
+title: no owner
+type: person
+uuid: !!python/object:uuid.UUID
+  int: 261931533849317192643855614543494801115
+yaml_file_saved: 2011-01-20 09:54:21.932135
