@@ -11,9 +11,11 @@ class Handler(object):
     def wants_to_handle(self, environ):
         return
 
-    def __init__(self, title, dbconn):
+    def __init__(self, title, config_wrapper, dbconn):
         self.title = title
+        self.config_wrapper = config_wrapper
         self.dbconn = dbconn
+
         self.templates = make_jinja2_environment()
 
     def __call__(self, environ, start_response):
@@ -24,5 +26,11 @@ class Handler(object):
 
         return [str('This is the base handler...')]
 
-from superfunchart.handlers.charthandler import ChartHandler
+    @staticmethod
+    def is_an_ajax_request(environ):
+        return False
+
+from superfunchart.handlers.charthandler import ChartHandler, \
+UpdateChart
+
 from superfunchart.handlers.dispatcher import Dispatcher

@@ -1,6 +1,6 @@
 body
 {
-    width:40em;
+    width:960px;
     font-family:helvetica, sans-serif;
     color:#777;
     margin:auto;
@@ -10,6 +10,7 @@ body
 {
     position:absolute;
     bottom:10px;
+    font-size:smaller;
 }
 
 ol#stars
@@ -20,18 +21,21 @@ ol#stars
 
 #stars li
 {
-    display:inline;
+    float:left;
     list-style:none;
+    margin:0;
+    padding:3px;
+    margin:0;
+}
+
+#stars form
+{
+    display:inline;
     margin:0;
     padding:0;
 }
-#stars img
-{
-    border:3px solid white;
-}
 
-#stars img:hover
+form#reset_button
 {
-    border:3px solid #777;
-    cursor:pointer;
+    clear:both;
 }

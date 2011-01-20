@@ -12,9 +12,9 @@ class Dispatcher(Handler):
     Handle requests by passing to the appropriate handler.
     """
 
-    def __init__(self, title, dbconn):
+    def __init__(self, title, config_wrapper, dbconn):
 
-        super(Dispatcher, self).__init__(title, dbconn)
+        super(Dispatcher, self).__init__(title, config_wrapper, dbconn)
         self.handlers = []
         self.error_page = self.templates.get_template('error.html')
 

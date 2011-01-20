@@ -32,7 +32,8 @@ class Chart(object):
 
             return (
                 [self.filled_in_star] * self.stars_filled_in
-                + [self.empty_star] * self.number_of_stars)
+                + [self.empty_star] * (
+                    self.number_of_stars - self.stars_filled_in))
 
 
     @property
@@ -54,8 +55,14 @@ class Chart(object):
     def empty_star(self):
 
         return textwrap.dedent("""
-            <img src="/static/sumo-grey.jpg" width="296" height="176"
-                alt="empty star"/>""")
+            <form action="/chart/%s/fill_in_a_star" method="POST">
+
+                <input type="submit"
+                    value=""
+                    style="width:296px; height:181px; background:url(/static/sumo-grey.jpg);"
+                />
+
+            </form>""" % self.chart_id)
 
     @property
     def filled_in_star(self):
@@ -123,3 +130,75 @@ class Chart(object):
         if results:
             return cls(*results)
 
+    def fill_in_a_star(self, dbconn):
+
+        if not self.chart_id:
+            raise ValueError("I need a chart ID!")
+
+        if self.stars_filled_in == self.number_of_stars:
+            raise ValueError("This chart is already done!")
+
+        qry = textwrap.dedent("""
+            update chart
+            set stars_filled_in = stars_filled_in + 1
+            where chart_id = (%s)
+            returning chart_id, parent_id, title, theme_id,
+            number_of_stars, stars_filled_in, created""")
+
+        cursor = dbconn.cursor()
+        cursor.execute(qry, [self.chart_id])
+
+        (chart_id, parent_id, title, theme_id, number_of_stars,
+            stars_filled_in, created) = cursor.fetchone()
+
+        self.chart_id = chart_id
+        self.parent_id = parent_id
+        self.title = title
+        self.theme_id = theme_id
+        self.number_of_stars = number_of_stars
+        self.stars_filled_in = stars_filled_in
+        self.created = created
+
+        return self
+
+
+    def reset_chart(self, dbconn):
+
+        if not self.chart_id:
+            raise ValueError("I need a chart ID!")
+
+        if self.stars_filled_in == 0:
+            return self
+
+        qry = textwrap.dedent("""
+            update chart
+            set stars_filled_in = 0
+            where chart_id = (%s)
+            returning chart_id, parent_id, title, theme_id,
+            number_of_stars, stars_filled_in, created""")
+
+        cursor = dbconn.cursor()
+        cursor.execute(qry, [self.chart_id])
+
+        (chart_id, parent_id, title, theme_id, number_of_stars,
+            stars_filled_in, created) = cursor.fetchone()
+
+        self.chart_id = chart_id
+        self.parent_id = parent_id
+        self.title = title
+        self.theme_id = theme_id
+        self.number_of_stars = number_of_stars
+        self.stars_filled_in = stars_filled_in
+        self.created = created
+
+        return self
+
+    @property
+    def reset_button(self):
+
+        return textwrap.dedent("""
+            <form id="reset_button"
+                action="/chart/%s/reset_chart"
+            method="POST">
+                <input type="submit" value="start over" />
+            </form>""" % self.chart_id)

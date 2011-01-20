@@ -6,3 +6,5 @@ database:
   user: superfunchart
   password: Sup3rFunCh@rt
 
+server:
+  host: http://superfunchart.sprout.tplus1.com
