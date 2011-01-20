@@ -1,6 +1,7 @@
 # vim: set expandtab ts=4 sw=4 filetype=python:
 
 import logging
+import logging.config
 import os
 import re
 
@@ -8,46 +9,22 @@ import psycopg2
 import yaml
 
 import superfunchart
+from superfunchart.templates import make_jinja2_environment
 
-class Handler(object):
+log = logging.getLogger('superfunchart')
 
-    def wants_to_handle(self, environ):
-        return False
+def load_logging_config():
 
-    def __init__(self, title, dbconn):
-        self.title = title
-        self.dbconn = dbconn
+    logging.config.fileConfig(os.path.join(
+        os.path.dirname(__file__),
+        'logging.cfg'))
 
-    def __call__(self, environ, start_response):
-
-        start_response(
-            '200 OK',
-            [('Content-Type', 'text/html; charset=utf-8')])
-
-        return [str('This is the base handler...')]
-
-
-class Chart(Handler):
-
-    """
-    Handle requests like GET /chart/99.
-    """
-
-    def __wants_to_handle(self, environ):
-
-        if environ['REQUEST_METHOD'] == 'GET' \
-        and re.compile(r'^/chart/(\d+)$').match(environ['PATH_INFO']):
-
-            return self
-
-class Dispatcher(Handler):
-    pass
-
+from superfunchart import handlers
 
 class ConfigWrapper(object):
 
-    def __init__(self, config):
-        self.config = config
+    def __init__(self, parsed_config):
+        self.parsed_config = parsed_config
 
     @classmethod
     def from_yaml_file(cls, filename):
@@ -66,11 +43,11 @@ class ConfigWrapper(object):
     def make_dbconn(self):
 
         return psycopg2.connect(
-            port=self.config['database']['port'],
-            database=self.config['database']['database'],
-            host=self.config['database']['host'],
-            user=self.config['database']['user'],
-            password=self.config['database']['password'])
+            port=self.parsed_config['database']['port'],
+            database=self.parsed_config['database']['database'],
+            host=self.parsed_config['database']['host'],
+            user=self.parsed_config['database']['user'],
+            password=self.parsed_config['database']['password'])
 
 
 def make_app(path_to_config):
@@ -79,4 +56,27 @@ def make_app(path_to_config):
     This builds and returns an object that gunicorn talks to.
     """
 
-    dbconn =
+    load_logging_config()
+
+    log.debug('making app...')
+
+    cw = ConfigWrapper.from_yaml_file(path_to_config)
+
+    log.debug('yaml!')
+
+    dbconn = cw.make_dbconn()
+
+    log.debug('dbconn!')
+
+    app = handlers.Dispatcher(title='Dispatcher', dbconn=dbconn)
+
+    log.debug('dispatcher!')
+
+    app.handlers.append(
+        handlers.Chart(title='GET /chart/{chart_id}', dbconn=dbconn))
+
+    log.debug('chart!')
+
+    log.debug('app!')
+
+    return app

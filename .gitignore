@@ -1,2 +1,3 @@
 pitzdir/me.yaml
 pitzdir/project.pickle
+*.pyc
