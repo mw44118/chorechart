@@ -31,6 +31,6 @@ class Handler(object):
         return False
 
 from superfunchart.handlers.charthandler import ChartHandler, \
-UpdateChart
+NewChartForm, UpdateChart, InsertChart
 
 from superfunchart.handlers.dispatcher import Dispatcher

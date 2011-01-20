@@ -35,7 +35,6 @@ class Chart(object):
                 + [self.empty_star] * (
                     self.number_of_stars - self.stars_filled_in))
 
-
     @property
     def all_done(self):
 
@@ -202,3 +201,68 @@ class Chart(object):
             method="POST">
                 <input type="submit" value="start over" />
             </form>""" % self.chart_id)
+
+    @classmethod
+    def insert_new_chart(cls, dbconn, parent_id, title, theme_id,
+        number_of_stars):
+
+        qry = textwrap.dedent("""
+            insert into chart
+            (parent_id, title, theme_id, number_of_stars)
+            values
+            (%s, %s, %s, %s)
+            returning chart_id, parent_id, title, theme_id,
+            number_of_stars, stars_filled_in, created""")
+
+        cursor = dbconn.cursor()
+
+        cursor.execute(qry,
+            [parent_id, title, theme_id, number_of_stars])
+
+        (chart_id, parent_id, title, theme_id, number_of_stars,
+            stars_filled_in, created) = cursor.fetchone()
+
+        self = cls()
+
+        self.chart_id = chart_id
+        self.parent_id = parent_id
+        self.title = title
+        self.theme_id = theme_id
+        self.number_of_stars = number_of_stars
+        self.stars_filled_in = stars_filled_in
+        self.created = created
+
+        return self
+
+
+    @classmethod
+    def from_parsed_post_data(cls, dbconn, parsed_post_data):
+
+        """
+
+        {'theme_id': ['-1'], 'number-of-stars': ['1'], 'parent_id': ['-1'],
+        'title': ['title goes here']}
+
+        """
+
+        parent_id = int(parsed_post_data['parent_id'][0])
+        title = parsed_post_data['title'][0]
+        theme_id = int(parsed_post_data['theme_id'][0])
+        number_of_stars = int(parsed_post_data['number-of-stars'][0])
+
+        if title == 'title goes here':
+            raise ValueError("Sorry, you need a better title",
+                dict(parent_id=parent_id, title=title, theme_id=theme_id,
+                number_of_stars=number_of_stars))
+
+        # While I don't have theming or authentication, just insert
+        # NULLs for parent_id and theme_id.
+        if parent_id == -1:
+            parent_id = None
+
+        if theme_id == -1:
+            theme_id = None
+
+        return cls.insert_new_chart(dbconn, parent_id, title, theme_id,
+            number_of_stars)
+

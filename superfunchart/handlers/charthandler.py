@@ -20,12 +20,6 @@ class ChartHandler(Handler):
 
     def wants_to_handle(self, environ):
 
-        log.debug("inside wants_to_handle for %s" % self.title)
-
-        log.debug(
-            'request method: %(REQUEST_METHOD)s path info: %(PATH_INFO)s'
-            % environ)
-
         if environ['REQUEST_METHOD'] == 'GET' \
         and self.extract_chart_id(environ['PATH_INFO']):
 
@@ -79,8 +73,6 @@ class UpdateChart(ChartHandler):
 
     def wants_to_handle(self, environ):
 
-        log.debug("inside wants_to_handle for %s" % self.title)
-
         if environ['REQUEST_METHOD'] == 'POST' \
         and self.extract_chart_id(environ['PATH_INFO']):
 
@@ -114,3 +106,66 @@ class UpdateChart(ChartHandler):
 
         return []
 
+class NewChartForm(Handler):
+
+    def wants_to_handle(self, environ):
+
+        if environ['REQUEST_METHOD'] == 'GET' \
+        and environ['PATH_INFO'] == '/new-chart':
+            return self
+
+    def __call__(self, environ, start_response):
+
+        start_response(
+            '200 OK',
+            [('Content-Type', 'text/html; charset=utf-8')])
+
+        t = self.templates.get_template('new-chart.html')
+
+        return [t.render()]
+
+class InsertChart(Handler):
+
+    def wants_to_handle(self, environ):
+
+        if environ['REQUEST_METHOD'] == 'POST' \
+        and environ['PATH_INFO'] == '/new-chart':
+
+            return self
+
+    def __call__(self, environ, start_response):
+
+        raw_post_data = environ['wsgi.input'].read(
+            int(environ['CONTENT_LENGTH']))
+
+        parsed_post_data = urlparse.parse_qs(raw_post_data)
+
+        log.debug('parsed_post_data is %s' % parsed_post_data)
+
+        try:
+
+            chart = Chart.from_parsed_post_data(
+                self.dbconn, parsed_post_data)
+
+            redirect_target = (
+                '%s/chart/%s'
+                % (self.config_wrapper.parsed_config['server']['host'],
+                    chart.chart_id))
+
+            start_response(
+            '302 FOUND',
+            [('Location', redirect_target)])
+
+            return []
+
+        except ValueError, ex:
+
+            start_response(
+                '200 OK',
+                [('Content-Type', 'text/html; charset=utf-8')])
+
+            message = ex.args[0]
+
+            t = self.templates.get_template('new-chart-error.html')
+
+            return [t.render(message=ex.args[0])]

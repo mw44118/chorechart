@@ -1,0 +1,49 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+
+<head>
+
+<title>Make a new chart</title>
+
+<link rel="stylesheet"
+    type="text/css" href="/static/superfunchart.css" />
+
+<script type="text/javascript"
+    src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
+
+</head>
+
+<body>
+
+<form action="/new-chart" method="POST">
+
+<fieldset>
+<legend>Make a new chart</legend>
+
+<p>
+<label for="title">Title</label><br />
+<input id="title" type="text" name="title" value="title goes here" />
+
+<p>
+<label for="number-of-stars">Number of stars</label><br />
+<select name="number-of-stars" id="number-of-stars">
+{% for num in range(1, 11) %}
+    <option>{{ num }}</option>
+{% endfor %}<!-- closes for num in range(1, 11) -->
+</select>
+<div id="star-num-slider"></div>
+
+<p>
+<input type="submit" value="Make a new chart" />
+
+</fieldset>
+
+<input type="hidden" name="theme_id" value="-1" />
+<input type="hidden" name="parent_id" value="-1" />
+
+</form>
+
+</body>
+
+</html>

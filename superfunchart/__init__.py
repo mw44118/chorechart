@@ -88,6 +88,22 @@ def make_app(path_to_config):
 
     log.debug('chart POST handler!')
 
+    app.handlers.append(
+        handlers.NewChartForm(
+            title='GET /new-chart',
+            config_wrapper=cw,
+            dbconn=dbconn))
+
+    log.debug('GET /new-chart')
+
+    app.handlers.append(
+        handlers.InsertChart(
+            title='POST /new-chart',
+            config_wrapper=cw,
+            dbconn=dbconn))
+
+    log.debug('POST /new-chart')
+
     log.debug('app!')
 
     return app
