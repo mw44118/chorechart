@@ -73,9 +73,9 @@ def make_app(path_to_config):
     log.debug('dispatcher!')
 
     app.handlers.append(
-        handlers.Chart(title='GET /chart/{chart_id}', dbconn=dbconn))
+        handlers.ChartHandler(title='GET /chart/{chart_id}', dbconn=dbconn))
 
-    log.debug('chart!')
+    log.debug('chart handler!')
 
     log.debug('app!')
 

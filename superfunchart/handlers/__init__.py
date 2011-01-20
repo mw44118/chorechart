@@ -24,5 +24,5 @@ class Handler(object):
 
         return [str('This is the base handler...')]
 
-from superfunchart.handlers.chart import Chart
+from superfunchart.handlers.charthandler import ChartHandler
 from superfunchart.handlers.dispatcher import Dispatcher

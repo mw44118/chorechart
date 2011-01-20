@@ -1,17 +1,25 @@
 begin;
 
-create table Parent
+create table parent
 (
 
     parent_id serial primary key,
     title text
 );
 
-create table Chart
+create table theme
+(
+    theme_id serial primary key,
+    title text,
+    embedded_video text
+);
+
+create table chart
 (
     chart_id serial primary key,
     parent_id integer references Parent (parent_id),
     title text,
+    theme_id integer references theme (theme_id),
 
     number_of_stars integer not null
     check (number_of_stars > 0),
@@ -22,5 +30,7 @@ create table Chart
     created timestamp with time zone not null default now()
 
 );
+
+create unique index on chart (parent_id, title);
 
 commit;

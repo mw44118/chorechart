@@ -6,11 +6,51 @@
 
 <title>chart</title>
 
+<link rel="stylesheet"
+    type="text/css" href="/static/superfunchart.css" />
+
+<script type="text/javascript"
+    src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
+
 </head>
 
 <body>
 
-<h1>chart</h1>
+<div id="header">
+</div><!-- closes div id="header" -->
+
+<div id="content">
+
+<h1>{{ chart.title }}</h1>
+
+{% if chart.all_done %}
+
+<iframe title="YouTube video player" class="youtube-player"
+type="text/html" width="480" height="390"
+src="http://www.youtube.com/embed/X46XOSX6tec" frameborder="0"
+allowFullScreen></iframe>
+
+{% else %}
+<ol id="stars">
+
+{% for star in chart.stars %}
+
+<li>{{ star }}</li>
+
+{% endfor %}<!-- closes for star in chart.stars -->
+
+</ol>
+
+{% endif %}<!-- closes if chart.all_done -->
+
+
+</div><!-- closes div id="content" -->
+
+<div id="footer">
+
+Sumo image taken without permission from <a href="http://hireanillustrator.com/i/cory-thoman">Cory Thoman</a>.
+
+</div><!-- closes div id="footer" -->
 
 </body>
 

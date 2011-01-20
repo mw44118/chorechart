@@ -5,9 +5,11 @@ import re
 
 from superfunchart.handlers import Handler
 
-log = logging.getLogger('superfunchart.handlers.chart')
+from superfunchart.datamodel import Chart
 
-class Chart(Handler):
+log = logging.getLogger('superfunchart.handlers.charthandler')
+
+class ChartHandler(Handler):
 
     """
     Handle requests like GET /chart/99.
@@ -22,12 +24,25 @@ class Chart(Handler):
 
             return self
 
+    @classmethod
+    def extract_chart_id(cls, path_info):
+
+        match = cls.path_info_pattern.match(path_info)
+
+        if match:
+            return int(match.groups()[0])
+
+
     def __call__(self, environ, start_response):
 
-        t = self.templates.get_template('chart.html')
+        chart_id = self.extract_chart_id(environ['PATH_INFO'])
+
+        chart = Chart.by_primary_key(self.dbconn, chart_id)
 
         start_response(
             '200 OK',
             [('Content-Type', 'text/html; charset=utf-8')])
 
-        return [t.render()]
+        t = self.templates.get_template('chart.html')
+
+        return [t.render(chart=chart)]

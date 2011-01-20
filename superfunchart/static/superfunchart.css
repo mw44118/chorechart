@@ -1,0 +1,37 @@
+body
+{
+    width:40em;
+    font-family:helvetica, sans-serif;
+    color:#777;
+    margin:auto;
+}
+
+#footer
+{
+    position:absolute;
+    bottom:10px;
+}
+
+ol#stars
+{
+    margin:0;
+    padding:0;
+}
+
+#stars li
+{
+    display:inline;
+    list-style:none;
+    margin:0;
+    padding:0;
+}
+#stars img
+{
+    border:3px solid white;
+}
+
+#stars img:hover
+{
+    border:3px solid #777;
+    cursor:pointer;
+}
