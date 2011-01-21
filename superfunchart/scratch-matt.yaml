@@ -6,7 +6,7 @@ database:
   password: Sup3rFunCh@rt
 
 server:
-  host: http://superfunchart.tplus1.com
+  host: http://superfunchart.com
 
 facebook:
   app_id: 192344830777998

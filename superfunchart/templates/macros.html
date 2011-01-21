@@ -32,7 +32,12 @@ FB.Event.subscribe('auth.logout', function(response) {
 </script>
 
 <div id="header">
-<p><fb:login-button autologoutlink="true"></fb:login-button></p>
+
+<fb:login-button autologoutlink="true"></fb:login-button>
+
+<a href="/my-charts">all my charts</a>
+
+
 </div><!-- closes div id="header" -->
 
 {% endmacro %}
@@ -65,5 +70,14 @@ FB.Event.subscribe('auth.logout', function(response) {
 <input type="hidden" name="theme_id" value="-1" />
 
 </form>
+
+{% endmacro %}
+
+{% macro like_button() %}
+
+<iframe
+src="http://www.facebook.com/plugins/like.php?href=superfunchart.com&amp;layout=standard&amp;show_faces=true&amp;width=450&amp;action=like&amp;colorscheme=light&amp;height=80"
+scrolling="no" frameborder="0" style="border:none; overflow:hidden;
+width:450px; height:80px;" allowTransparency="true"></iframe>
 
 {% endmacro %}

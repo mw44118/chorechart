@@ -20,8 +20,7 @@
 
 <body>
 
-<div id="header">
-</div><!-- closes div id="header" -->
+{{ m.draw_header(app_id) }}
 
 <div id="content">
 
@@ -48,6 +47,8 @@ allowFullScreen></iframe>
 {% endif %}<!-- closes if chart.all_done -->
 
 {{ chart.reset_button }}
+
+{{ m.like_button() }}
 
 </div><!-- closes div id="content" -->
 

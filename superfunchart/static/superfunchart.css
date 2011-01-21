@@ -11,6 +11,12 @@ p
     width:40em;
 }
 
+a
+{
+    text-decoration:none;
+    font-weight:bold;
+}
+
 #footer
 {
     position:absolute;
