@@ -6,6 +6,11 @@ body
     margin:auto;
 }
 
+p
+{
+    width:40em;
+}
+
 #footer
 {
     position:absolute;
