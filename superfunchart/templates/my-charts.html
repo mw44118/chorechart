@@ -28,7 +28,7 @@
 
 <div id="content">
 
-<h1>My Charts</h1>
+<h1>Super Fun Chart Makes Boring Stuff Fun</h1>
 
 {% if my_charts %}
 
@@ -52,11 +52,9 @@
 
 </table>
 
-{% else %}
-<p>
-<a href="/new-chart">Go make a chart!</a>
-
 {% endif %}
+
+{{ m.new_chart_form() }}
 
 </div><!-- closes div id="content" -->
 

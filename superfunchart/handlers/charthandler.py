@@ -46,7 +46,8 @@ class ChartHandler(Handler):
 
         t = self.templates.get_template('chart.html')
 
-        return [t.render(chart=chart)]
+        return [t.render(chart=chart,
+            app_id=self.config_wrapper.app_id)]
 
 class UpdateChart(ChartHandler):
 
@@ -117,7 +118,8 @@ class NewChartForm(Handler):
 
         t = self.templates.get_template('new-chart.html')
 
-        return [t.render()]
+        return [t.render(
+            app_id=self.config_wrapper.app_id)]
 
 class InsertChart(Handler):
 

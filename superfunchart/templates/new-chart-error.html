@@ -1,6 +1,8 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+{% import 'macros.html' as m %}
+<!DOCTYPE html>
 
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:fb="http://www.facebook.com/2008/fbml">
 
 <head>
 
@@ -15,6 +17,8 @@
 </head>
 
 <body>
+
+{{ m.draw_header(app_id) }}
 
 <form action="/new-chart" method="POST">
 

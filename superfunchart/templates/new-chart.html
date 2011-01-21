@@ -1,6 +1,8 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+{% import 'macros.html' as m %}
+<!DOCTYPE html>
 
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:fb="http://www.facebook.com/2008/fbml">
 
 <head>
 
@@ -16,32 +18,9 @@
 
 <body>
 
-<form action="/new-chart" method="POST">
+{{ m.draw_header(app_id) }}
 
-<fieldset>
-<legend>Make a new chart</legend>
-
-<p>
-<label for="title">Title</label><br />
-<input id="title" type="text" name="title" value="title goes here" />
-
-<p>
-<label for="number-of-stars">Number of stars</label><br />
-<select name="number-of-stars" id="number-of-stars">
-{% for num in range(1, 11) %}
-    <option>{{ num }}</option>
-{% endfor %}<!-- closes for num in range(1, 11) -->
-</select>
-<div id="star-num-slider"></div>
-
-<p>
-<input type="submit" value="Make a new chart" />
-
-</fieldset>
-
-<input type="hidden" name="theme_id" value="-1" />
-
-</form>
+{{ m.new_chart_form() }}
 
 </body>
 
