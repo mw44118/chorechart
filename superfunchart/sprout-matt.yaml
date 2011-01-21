@@ -1,5 +1,4 @@
 database:
-
   database: superfunchart_dev
   host: localhost
   port: 5432
@@ -8,3 +7,8 @@ database:
 
 server:
   host: http://superfunchart.sprout.tplus1.com
+
+facebook:
+  app_id: 188987904462216
+  app_secret: cd9a071f6f8318422dbc820a3190a2ae
+  redirect_url: http://superfunchart.sprout.tplus1.com

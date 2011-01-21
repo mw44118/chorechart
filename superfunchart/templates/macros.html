@@ -1,0 +1,38 @@
+{% macro draw_footer() %}
+
+<div id="footer">
+
+Sumo image taken without permission from <a href="http://hireanillustrator.com/i/cory-thoman">Cory Thoman</a>.
+
+</div><!-- closes div id="footer" -->
+
+{% endmacro %}
+
+{% macro draw_header(app_id) %}
+
+<div id="fb-root"></div>
+
+<script src="http://connect.facebook.net/en_US/all.js"></script>
+
+<script>
+FB.init({
+    appId:{{ app_id }}, cookie:true,
+    status:true, xfbml:true
+});
+
+// Force a reload when a login/logout happens.
+FB.Event.subscribe('auth.login', function(response) {
+        window.location.reload();
+});
+
+FB.Event.subscribe('auth.logout', function(response) {
+        window.location.reload();
+});
+
+</script>
+
+<div id="header">
+<p><fb:login-button autologoutlink="true"></fb:login-button></p>
+</div><!-- closes div id="header" -->
+
+{% endmacro %}

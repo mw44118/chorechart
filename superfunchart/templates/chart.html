@@ -1,3 +1,4 @@
+{% import 'macros.html' as m %}
 <!DOCTYPE html>
 
 <html>
@@ -50,11 +51,7 @@ allowFullScreen></iframe>
 
 </div><!-- closes div id="content" -->
 
-<div id="footer">
-
-Sumo image taken without permission from <a href="http://hireanillustrator.com/i/cory-thoman">Cory Thoman</a>.
-
-</div><!-- closes div id="footer" -->
+{{ m.draw_footer() }}
 
 </body>
 

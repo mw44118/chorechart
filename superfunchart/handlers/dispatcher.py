@@ -20,6 +20,8 @@ class Dispatcher(Handler):
 
     def __call__(self, environ, start_response):
 
+        log.debug("%(REQUEST_METHOD)s %(PATH_INFO)s" % environ)
+
         try:
 
             for h in self.handlers:

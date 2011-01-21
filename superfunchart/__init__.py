@@ -49,6 +49,13 @@ class ConfigWrapper(object):
             user=self.parsed_config['database']['user'],
             password=self.parsed_config['database']['password'])
 
+    @property
+    def app_id(self):
+        return self.parsed_config['facebook']['app_id']
+
+    @property
+    def redirect_url(self):
+        return self.parsed_config['facebook']['redirect_url']
 
 def make_app(path_to_config):
 
@@ -104,6 +111,15 @@ def make_app(path_to_config):
 
     log.debug('POST /new-chart')
 
-    log.debug('app!')
+    app.handlers.append(
+        handlers.SplashPage(
+            title='GET /',
+            config_wrapper=cw,
+            dbconn=dbconn))
+
+    log.debug('GET /')
+
+
+    log.debug('app all set up!')
 
     return app

@@ -1,5 +1,4 @@
 database:
-
   database: superfunchart_dev
   host: localhost
   port: 5432
@@ -8,3 +7,8 @@ database:
 
 server:
   host: http://superfunchart.tplus1.com
+
+facebook:
+  app_id: 180463421994426
+  api_key: a66a9d22b1fd2195182fe79382bf443f
+  app_secret: b7a39ae47de20f5353414a7e8fc2136f

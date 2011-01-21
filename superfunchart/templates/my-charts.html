@@ -1,0 +1,67 @@
+{% import 'macros.html' as m %}
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:fb="http://www.facebook.com/2008/fbml">
+
+<head>
+
+<title>Super Fun Chart Makes Boring Stuff Fun</title>
+
+<link rel="stylesheet"
+    type="text/css" href="/static/superfunchart.css" />
+
+<script type="text/javascript"
+    src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
+
+<script type="text/javascript"
+    src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.js"></script>
+
+<title>My Charts</title>
+
+</head>
+
+<body>
+
+{{ m.draw_header(app_id) }}
+
+<div id="content">
+
+<h1>My Charts</h1>
+
+{% if my_charts %}
+
+<table>
+
+<thead>
+<tr>
+<th>Title</th>
+<th>Percent complete</th>
+</tr>
+</thead>
+
+<tbody>
+{% for ch in my_charts %}
+<tr>
+<td><a href="/chart/{{ ch.chart_id }}">{{ ch.title }}</a></td>
+<td>{{ ch.percent_complete }}</td>
+</tr>
+{% endfor %}
+</tbody>
+
+</table>
+
+{% else %}
+<p>
+<a href="/new-chart">Go make a chart!</a>
+
+{% endif %}
+
+</div><!-- closes div id="content" -->
+
+{{ m.draw_footer() }}
+
+</body>
+
+</html>

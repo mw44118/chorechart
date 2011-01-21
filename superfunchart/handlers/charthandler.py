@@ -76,13 +76,8 @@ class UpdateChart(ChartHandler):
         if environ['REQUEST_METHOD'] == 'POST' \
         and self.extract_chart_id(environ['PATH_INFO']):
 
-            log.debug('yup!')
-
             return self
 
-        else:
-
-            log.debug('nope!')
 
     def __call__(self, environ, start_response):
 
@@ -140,12 +135,12 @@ class InsertChart(Handler):
 
         parsed_post_data = urlparse.parse_qs(raw_post_data)
 
-        log.debug('parsed_post_data is %s' % parsed_post_data)
+        facebook_uid = self.facebook_uid_from_cookie(environ)
 
         try:
 
             chart = Chart.from_parsed_post_data(
-                self.dbconn, parsed_post_data)
+                self.dbconn, facebook_uid, parsed_post_data)
 
             redirect_target = (
                 '%s/chart/%s'

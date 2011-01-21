@@ -4,12 +4,12 @@ import textwrap
 
 class Chart(object):
 
-    def __init__(self, chart_id=None, parent_id=None, title=None,
+    def __init__(self, chart_id=None, facebook_uid=None, title=None,
         theme_id=None, number_of_stars=None, stars_filled_in=None,
         created=None):
 
         self.chart_id = chart_id
-        self.parent_id = parent_id
+        self.facebook_uid = facebook_uid
         self.title = title
         self.theme_id = theme_id
         self.number_of_stars = number_of_stars
@@ -34,6 +34,27 @@ class Chart(object):
                 [self.filled_in_star] * self.stars_filled_in
                 + [self.empty_star] * (
                     self.number_of_stars - self.stars_filled_in))
+
+    @property
+    def percent_complete(self):
+
+        """
+        >>> c = Chart()
+        >>> c.percent_complete
+        '0'
+        >>> c.number_of_stars = 10
+        >>> c.stars_filled_in = 5
+        >>> c.percent_complete
+        '50'
+
+        """
+
+        if not self.number_of_stars:
+            return '0'
+
+        else:
+            return '%0.0f' % (100.0 *(self.stars_filled_in or 0) /
+            self.number_of_stars)
 
     @property
     def all_done(self):
@@ -79,7 +100,7 @@ class Chart(object):
             values
             (%s, %s)
 
-            returning chart_id, parent_id, title, theme_id,
+            returning chart_id, facebook_uid, title, theme_id,
             number_of_stars, stars_filled_in, created
             """)
 
@@ -93,7 +114,7 @@ class Chart(object):
     def by_primary_key(cls, dbconn, chart_id):
 
         qry = textwrap.dedent("""
-            select chart_id, parent_id, title, theme_id,
+            select chart_id, facebook_uid, title, theme_id,
             number_of_stars, stars_filled_in, created
 
             from chart
@@ -109,20 +130,20 @@ class Chart(object):
             return cls(*results)
 
     @classmethod
-    def by_parent_id_and_title(cls, dbconn, parent_id, title):
+    def by_facebook_uid_and_title(cls, dbconn, facebook_uid, title):
 
         qry = textwrap.dedent("""
-            select chart_id, parent_id, title, theme_id,
+            select chart_id, facebook_uid, title, theme_id,
             number_of_stars, stars_filled_in, created
 
             from chart
 
-            where parent_id = (%s)
+            where facebook_uid = (%s)
             and title = (%s)
             """)
 
         cursor = dbconn.cursor()
-        cursor.execute(qry, [parent_id, title])
+        cursor.execute(qry, [facebook_uid, title])
 
         results = cursor.fetchone()
 
@@ -141,17 +162,17 @@ class Chart(object):
             update chart
             set stars_filled_in = stars_filled_in + 1
             where chart_id = (%s)
-            returning chart_id, parent_id, title, theme_id,
+            returning chart_id, facebook_uid, title, theme_id,
             number_of_stars, stars_filled_in, created""")
 
         cursor = dbconn.cursor()
         cursor.execute(qry, [self.chart_id])
 
-        (chart_id, parent_id, title, theme_id, number_of_stars,
+        (chart_id, facebook_uid, title, theme_id, number_of_stars,
             stars_filled_in, created) = cursor.fetchone()
 
         self.chart_id = chart_id
-        self.parent_id = parent_id
+        self.facebook_uid = facebook_uid
         self.title = title
         self.theme_id = theme_id
         self.number_of_stars = number_of_stars
@@ -173,17 +194,17 @@ class Chart(object):
             update chart
             set stars_filled_in = 0
             where chart_id = (%s)
-            returning chart_id, parent_id, title, theme_id,
+            returning chart_id, facebook_uid, title, theme_id,
             number_of_stars, stars_filled_in, created""")
 
         cursor = dbconn.cursor()
         cursor.execute(qry, [self.chart_id])
 
-        (chart_id, parent_id, title, theme_id, number_of_stars,
+        (chart_id, facebook_uid, title, theme_id, number_of_stars,
             stars_filled_in, created) = cursor.fetchone()
 
         self.chart_id = chart_id
-        self.parent_id = parent_id
+        self.facebook_uid = facebook_uid
         self.title = title
         self.theme_id = theme_id
         self.number_of_stars = number_of_stars
@@ -203,29 +224,29 @@ class Chart(object):
             </form>""" % self.chart_id)
 
     @classmethod
-    def insert_new_chart(cls, dbconn, parent_id, title, theme_id,
+    def insert_new_chart(cls, dbconn, facebook_uid, title, theme_id,
         number_of_stars):
 
         qry = textwrap.dedent("""
             insert into chart
-            (parent_id, title, theme_id, number_of_stars)
+            (facebook_uid, title, theme_id, number_of_stars)
             values
             (%s, %s, %s, %s)
-            returning chart_id, parent_id, title, theme_id,
+            returning chart_id, facebook_uid, title, theme_id,
             number_of_stars, stars_filled_in, created""")
 
         cursor = dbconn.cursor()
 
         cursor.execute(qry,
-            [parent_id, title, theme_id, number_of_stars])
+            [facebook_uid, title, theme_id, number_of_stars])
 
-        (chart_id, parent_id, title, theme_id, number_of_stars,
+        (chart_id, facebook_uid, title, theme_id, number_of_stars,
             stars_filled_in, created) = cursor.fetchone()
 
         self = cls()
 
         self.chart_id = chart_id
-        self.parent_id = parent_id
+        self.facebook_uid = facebook_uid
         self.title = title
         self.theme_id = theme_id
         self.number_of_stars = number_of_stars
@@ -236,33 +257,38 @@ class Chart(object):
 
 
     @classmethod
-    def from_parsed_post_data(cls, dbconn, parsed_post_data):
+    def from_parsed_post_data(cls, dbconn, facebook_uid, parsed_post_data):
 
-        """
-
-        {'theme_id': ['-1'], 'number-of-stars': ['1'], 'parent_id': ['-1'],
-        'title': ['title goes here']}
-
-        """
-
-        parent_id = int(parsed_post_data['parent_id'][0])
         title = parsed_post_data['title'][0]
         theme_id = int(parsed_post_data['theme_id'][0])
         number_of_stars = int(parsed_post_data['number-of-stars'][0])
 
         if title == 'title goes here':
             raise ValueError("Sorry, you need a better title",
-                dict(parent_id=parent_id, title=title, theme_id=theme_id,
+                dict(title=title, theme_id=theme_id,
                 number_of_stars=number_of_stars))
-
-        # While I don't have theming or authentication, just insert
-        # NULLs for parent_id and theme_id.
-        if parent_id == -1:
-            parent_id = None
 
         if theme_id == -1:
             theme_id = None
 
-        return cls.insert_new_chart(dbconn, parent_id, title, theme_id,
+        return cls.insert_new_chart(dbconn, facebook_uid, title, theme_id,
             number_of_stars)
 
+
+    @classmethod
+    def my_charts(cls, dbconn, facebook_uid):
+
+        """
+        Return a list of charts that this user made.
+        """
+
+        qry = textwrap.dedent("""
+            select chart_id, chart.facebook_uid, chart.title, theme_id,
+            number_of_stars, stars_filled_in, chart.created
+            from chart
+            where facebook_uid = (%s)""")
+
+        cursor = dbconn.cursor()
+        cursor.execute(qry, [facebook_uid])
+
+        return [cls(*row) for row in cursor.fetchall()]

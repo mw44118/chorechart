@@ -1,12 +1,5 @@
 begin;
 
-create table parent
-(
-
-    parent_id serial primary key,
-    title text
-);
-
 create table theme
 (
     theme_id serial primary key,
@@ -17,7 +10,7 @@ create table theme
 create table chart
 (
     chart_id serial primary key,
-    parent_id integer references Parent (parent_id),
+    facebook_uid text not null,
     title text,
     theme_id integer references theme (theme_id),
 
@@ -31,6 +24,6 @@ create table chart
 
 );
 
-create unique index on chart (parent_id, title);
+create unique index on chart (facebook_uid, title);
 
 commit;

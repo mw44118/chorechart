@@ -39,3 +39,18 @@ form#reset_button
 {
     clear:both;
 }
+
+table
+{
+    width:80%;
+    border-collapse:collapse;
+    border:3px solid #ccc;
+}
+
+th, td
+{
+    padding:0.5em;
+    text-align:left;
+    border:1px solid #ccc;
+}
+
