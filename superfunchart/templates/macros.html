@@ -35,7 +35,7 @@ FB.Event.subscribe('auth.logout', function(response) {
 
 <fb:login-button autologoutlink="true"></fb:login-button>
 
-<a href="/my-charts">all my charts</a>
+<a href="/">home</a>
 
 
 </div><!-- closes div id="header" -->
@@ -54,7 +54,8 @@ FB.Event.subscribe('auth.logout', function(response) {
 <input id="title" type="text" name="title" value="title goes here" />
 
 <p>
-<label for="number-of-stars">Number of stars</label><br />
+<label for="number-of-stars">Number of stars</label> (the number of
+stars is the number of tasks you want to have on the chart).<br />
 <select name="number-of-stars" id="number-of-stars">
 {% for num in range(1, 11) %}
     <option>{{ num }}</option>
