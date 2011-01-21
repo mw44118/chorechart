@@ -45,5 +45,4 @@ class SplashPage(Handler):
             t = self.templates.get_template('splashpage.html')
 
             return [t.render(
-                app_id=self.config_wrapper.app_id,
-                redirect_url=self.config_wrapper.redirect_url)]
+                app_id=self.config_wrapper.app_id)]

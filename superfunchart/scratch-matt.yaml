@@ -9,6 +9,6 @@ server:
   host: http://superfunchart.tplus1.com
 
 facebook:
-  app_id: 180463421994426
-  api_key: a66a9d22b1fd2195182fe79382bf443f
-  app_secret: b7a39ae47de20f5353414a7e8fc2136f
+  app_id: 192344830777998
+  api_key: d9a80b16d589497481098a4cf1f1477d
+  app_secret: 7ecb5912d925d1dc43bae61c54ab2052

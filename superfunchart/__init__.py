@@ -53,10 +53,6 @@ class ConfigWrapper(object):
     def app_id(self):
         return self.parsed_config['facebook']['app_id']
 
-    @property
-    def redirect_url(self):
-        return self.parsed_config['facebook']['redirect_url']
-
 def make_app(path_to_config):
 
     """
