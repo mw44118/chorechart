@@ -4,6 +4,8 @@ create table theme
 (
     theme_id serial primary key,
     title text,
+    empty_star_html text,
+    filled_in_star_html text,
     embedded_video text
 );
 

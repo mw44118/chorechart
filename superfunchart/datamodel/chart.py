@@ -292,3 +292,55 @@ class Chart(object):
         cursor.execute(qry, [facebook_uid])
 
         return [cls(*row) for row in cursor.fetchall()]
+
+class Theme(object):
+
+    def __init__(self, theme_id=None, title=None, empty_star_html=None,
+        filled_in_star_html=None, embedded_video=None):
+
+        self.theme_id = theme_id
+        self.title = title
+        self.empty_star_html = empty_star_html
+        self.filled_in_star_html = filled_in_star_html
+        self.embedded_video = embedded_video
+
+    @classmethod
+    def by_primary_key(cls, dbconn, theme_id):
+
+        qry = textwrap.dedent("""
+            select theme_id, title, empty_star_html,
+            filled_in_star_html, embedded_video
+
+            from theme
+
+            where theme_id = (%s)""")
+
+
+    @classmethod
+    def insert_sample_data(cls, dbconn):
+
+        qry = textwrap.dedent("""
+            insert into theme
+            (title, empty_star_html, filled_in_star_html, embedded_video)
+            values
+            (%s, %s, %s, %s)
+
+            returning theme_id, title, empty_star_html,
+            filled_in_star_html, embedded_video""")
+
+        sumo_data = [
+            'sumo theme',
+
+            textwrap.dedent("""
+                <iframe title="YouTube video player" class="youtube-player"
+                type="text/html" width="480" height="390"
+                src="http://www.youtube.com/embed/MRm-wkDqSKY" frameborder="0"
+                allowFullScreen></iframe>""")
+
+
+        ]
+
+        cursor = dbconn.cursor()
+        cursor.execute(qry, ['Charlie eats a good dinner', 5])
+
+        return [cls(*row) for row in cursor.fetchall()]
