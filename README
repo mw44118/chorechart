@@ -1,0 +1,32 @@
+++++++++++++++++++++++++++++
+How to install SuperFunChart
+++++++++++++++++++++++++++++
+
+Python stuff
+=============
+
+Do this to pull in the python dependencies::
+
+    $ python setup.py develop
+
+You should probably do this in a virtual environment.
+
+Database
+========
+
+You also need a database.  I only use postgresql, but you can probably
+get away with using MySQL or SQLite or whatever else you want.
+
+Run the create-database-schema.sql file against whatever database you
+go with.
+
+
+Fire it up
+==========
+
+Start up the web server like this::
+
+    $ gunicorn superfunchart:make_app\('"'scratch-matt.yaml'"'\)
+
+Of course you need to replace scratch-matt.yaml with your own yaml
+config file.
